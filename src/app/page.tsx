@@ -78,7 +78,11 @@ export default function Chat() {
         </div>
 
         {/* Chat Messages */}
-        <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+        <div
+          role="log"
+          aria-live="polite"
+          className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent"
+        >
           {messages.length === 0 && (
             <div className="h-full flex flex-col items-center justify-center text-center opacity-70">
               <div className="p-4 bg-emerald-500/10 rounded-2xl mb-4 border border-emerald-500/20">
@@ -248,6 +252,8 @@ export default function Chat() {
               value={input}
               onChange={handleInputChange}
               placeholder="Ask anything about nutrition..."
+              aria-label="Ask anything about nutrition"
+              autoComplete="off"
               className="w-full bg-black/40 border border-white/10 text-white rounded-full pl-6 pr-14 py-4 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition-all placeholder:text-zinc-500 shadow-inner"
               disabled={isLoading}
             />
