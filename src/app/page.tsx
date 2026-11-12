@@ -7,6 +7,22 @@ import ReactMarkdown from 'react-markdown';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
+const SUGGESTED_PROMPTS = [
+  "Plan a high-protein vegetarian diet",
+  "What are the benefits of intermittent fasting?",
+  "Give me a 15-minute healthy breakfast recipe",
+  "How to improve my gut health?",
+] as const;
+
+function extractText(message: UIMessage): string {
+  return (
+    message.parts
+      ?.filter((p): p is { type: 'text'; text: string } => p.type === 'text')
+      .map((p) => p.text)
+      .join('\n') || ''
+  );
+}
+
 export default function Chat() {
   const { messages, status, sendMessage, stop, error, regenerate, clearError, setMessages } = useChat();
   const [input, setInput] = useState('');
@@ -92,12 +108,7 @@ export default function Chat() {
               <p className="text-zinc-400 max-w-sm text-sm">Ask me about healthy recipes, diet plans, nutritional values, or lifestyle habits.</p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-8 w-full max-w-xl">
-                {[
-                  "Plan a high-protein vegetarian diet",
-                  "What are the benefits of intermittent fasting?",
-                  "Give me a 15-minute healthy breakfast recipe",
-                  "How to improve my gut health?"
-                ].map((suggestion, i) => (
+                {SUGGESTED_PROMPTS.map((suggestion, i) => (
                   <button 
                     key={i}
                     type="button"
@@ -116,11 +127,7 @@ export default function Chat() {
 
           <AnimatePresence initial={false}>
             {messages.map((message: UIMessage) => {
-              const textContent =
-                message.parts
-                  ?.filter((p): p is { type: 'text'; text: string } => p.type === 'text')
-                  .map((p) => p.text)
-                  .join('\n') || '';
+              const textContent = extractText(message);
               return (
               <motion.div
                 key={message.id}
