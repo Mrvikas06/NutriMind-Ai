@@ -129,14 +129,37 @@ export default function Chat() {
                     ) : (
                       <ReactMarkdown
                         components={{
-                          h1: ({node, ...props}) => <h1 className="text-xl font-bold text-emerald-400 mb-2 mt-4" {...props} />,
-                          h2: ({node, ...props}) => <h2 className="text-lg font-bold text-emerald-400 mb-2 mt-3" {...props} />,
-                          h3: ({node, ...props}) => <h3 className="text-base font-bold text-emerald-300 mb-2 mt-2" {...props} />,
-                          p: ({node, ...props}) => <p className="mb-3 leading-relaxed text-sm" {...props} />,
-                          ul: ({node, ...props}) => <ul className="list-disc pl-5 mb-3 text-sm space-y-1" {...props} />,
-                          ol: ({node, ...props}) => <ol className="list-decimal pl-5 mb-3 text-sm space-y-1" {...props} />,
-                          li: ({node, ...props}) => <li className="text-zinc-300 marker:text-emerald-500" {...props} />,
-                          strong: ({node, ...props}) => <strong className="font-bold text-white" {...props} />,
+                          h1: ({ ...props }) => <h1 className="text-xl font-bold text-emerald-400 mb-2 mt-4" {...props} />,
+                          h2: ({ ...props }) => <h2 className="text-lg font-bold text-emerald-400 mb-2 mt-3" {...props} />,
+                          h3: ({ ...props }) => <h3 className="text-base font-bold text-emerald-300 mb-2 mt-2" {...props} />,
+                          p: ({ ...props }) => <p className="mb-3 leading-relaxed text-sm" {...props} />,
+                          ul: ({ ...props }) => <ul className="list-disc pl-5 mb-3 text-sm space-y-1" {...props} />,
+                          ol: ({ ...props }) => <ol className="list-decimal pl-5 mb-3 text-sm space-y-1" {...props} />,
+                          li: ({ ...props }) => <li className="text-zinc-300 marker:text-emerald-500" {...props} />,
+                          strong: ({ ...props }) => <strong className="font-bold text-white" {...props} />,
+                          blockquote: ({ ...props }) => (
+                            <blockquote className="border-l-2 border-emerald-500/50 pl-3 italic text-zinc-300 my-2" {...props} />
+                          ),
+                          code: ({ className, children, ...props }) => {
+                            const isInline = !className;
+                            return isInline ? (
+                              <code className="bg-white/10 text-emerald-300 px-1.5 py-0.5 rounded text-xs font-mono" {...props}>
+                                {children}
+                              </code>
+                            ) : (
+                              <code className="block bg-black/40 text-emerald-200 p-3 rounded-lg text-xs font-mono overflow-x-auto my-2 border border-white/5" {...props}>
+                                {children}
+                              </code>
+                            );
+                          },
+                          a: ({ ...props }) => (
+                            <a
+                              className="text-emerald-400 underline underline-offset-2 hover:text-emerald-300 transition-colors"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              {...props}
+                            />
+                          ),
                         }}
                       >
                         {textContent}
