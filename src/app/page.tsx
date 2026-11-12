@@ -2,13 +2,13 @@
 
 import { useChat } from '@ai-sdk/react';
 import type { UIMessage } from '@ai-sdk/react';
-import { Bot, User, Send, Sparkles, Activity, Apple, Square } from 'lucide-react';
+import { Bot, User, Send, Sparkles, Activity, Apple, Square, AlertCircle, RotateCcw, X } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
 export default function Chat() {
-  const { messages, status, sendMessage, stop } = useChat();
+  const { messages, status, sendMessage, stop, error, regenerate, clearError } = useChat();
   const [input, setInput] = useState('');
   const isLoading = status === 'submitted' || status === 'streaming';
   
@@ -191,6 +191,37 @@ export default function Chat() {
               </div>
             </motion.div>
           )}
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20 text-rose-300 flex items-center justify-between gap-3 text-sm"
+            >
+              <div className="flex items-center gap-2">
+                <AlertCircle className="w-5 h-5 text-rose-400 shrink-0" />
+                <span>{error.message || 'Something went wrong while connecting to NutriMind.'}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => regenerate()}
+                  className="flex items-center gap-1 px-3 py-1 bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 rounded-lg text-xs font-medium transition-colors"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  Retry
+                </button>
+                <button
+                  type="button"
+                  onClick={() => clearError()}
+                  aria-label="Dismiss error"
+                  className="p-1 hover:bg-rose-500/20 text-rose-400 hover:text-rose-200 rounded-lg transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </motion.div>
+          )}
+
           <div ref={messagesEndRef} />
         </div>
 
