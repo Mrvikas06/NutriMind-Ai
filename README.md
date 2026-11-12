@@ -84,11 +84,16 @@
 ├── src/
 │   ├── app/
 │   │   ├── api/
-│   │   │   └── chat/       # Streaming chat endpoint (Gemini integration)
+│   │   │   ├── chat/       # Streaming chat endpoint (Gemini integration)
+│   │   │   └── health/     # Service health check endpoint
+│   │   ├── error.tsx       # Global error boundary component
 │   │   ├── favicon.ico     # Application icon
 │   │   ├── globals.css     # Global styles & custom scrollbars
-│   │   ├── layout.tsx      # Root layout & SEO metadata
-│   │   └── page.tsx        # Main NutriMind AI chat interface
+│   │   ├── layout.tsx      # Root layout, theme & SEO metadata
+│   │   ├── manifest.ts     # PWA web manifest definition
+│   │   ├── not-found.tsx   # Custom 404 error page
+│   │   ├── page.tsx        # Main NutriMind AI chat interface
+│   │   └── robots.ts       # Search crawler indexing rules
 ├── .env.example            # Environment variables template
 ├── next.config.ts          # Next.js configuration
 ├── package.json            # Dependencies and scripts
