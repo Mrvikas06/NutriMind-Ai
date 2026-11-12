@@ -1,4 +1,4 @@
-import { google } from '@ai-sdk/google';
+import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { streamText, convertToModelMessages } from 'ai';
 
 // Allow streaming responses up to 30 seconds
@@ -14,6 +14,17 @@ export async function POST(req: Request) {
       );
     }
 
+    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return new Response(
+        JSON.stringify({
+          error: "Google Gemini API key is missing. Set GOOGLE_GENERATIVE_AI_API_KEY or GEMINI_API_KEY in your environment.",
+        }),
+        { status: 401, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    const google = createGoogleGenerativeAI({ apiKey });
     const { messages } = body;
     const modelMessages = await convertToModelMessages(messages);
 
