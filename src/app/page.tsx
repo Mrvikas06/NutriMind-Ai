@@ -2,7 +2,7 @@
 
 import { useChat } from '@ai-sdk/react';
 import type { UIMessage } from '@ai-sdk/react';
-import { Bot, User, Send, Sparkles, Activity, Apple } from 'lucide-react';
+import { Bot, User, Send, Sparkles, Activity, Apple, Square } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
@@ -204,13 +204,27 @@ export default function Chat() {
               className="w-full bg-black/40 border border-white/10 text-white rounded-full pl-6 pr-14 py-4 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition-all placeholder:text-zinc-500 shadow-inner"
               disabled={isLoading}
             />
-            <button
-              type="submit"
-              disabled={isLoading || !input.trim()}
-              className="absolute right-2 p-2.5 bg-emerald-500 hover:bg-emerald-400 text-black rounded-full disabled:opacity-50 disabled:hover:bg-emerald-500 transition-colors shadow-[0_0_15px_rgba(16,185,129,0.4)]"
-            >
-              <Send className="w-5 h-5 ml-0.5" />
-            </button>
+            {isLoading ? (
+              <button
+                type="button"
+                onClick={() => stop()}
+                title="Stop generating"
+                aria-label="Stop generating"
+                className="absolute right-2 p-2.5 bg-rose-500 hover:bg-rose-400 text-white rounded-full transition-colors shadow-[0_0_15px_rgba(244,63,94,0.4)]"
+              >
+                <Square className="w-4 h-4 fill-current" />
+              </button>
+            ) : (
+              <button
+                type="submit"
+                disabled={!input.trim()}
+                title="Send message"
+                aria-label="Send message"
+                className="absolute right-2 p-2.5 bg-emerald-500 hover:bg-emerald-400 text-black rounded-full disabled:opacity-50 disabled:hover:bg-emerald-500 transition-colors shadow-[0_0_15px_rgba(16,185,129,0.4)]"
+              >
+                <Send className="w-5 h-5 ml-0.5" />
+              </button>
+            )}
           </form>
           <div className="text-center mt-3">
             <p className="text-[10px] text-zinc-500">NutriMind can make mistakes. Consider verifying important health information.</p>
