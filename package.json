@@ -1,6 +1,7 @@
 {
-  "name": "temp-app",
+  "name": "nutrimind-ai",
   "version": "0.1.0",
+  "description": "NutriMind AI - Intelligent Nutrition and Health Companion",
   "private": true,
   "scripts": {
     "dev": "next dev",
