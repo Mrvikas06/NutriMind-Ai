@@ -96,8 +96,12 @@ export default function Chat() {
           )}
 
           <AnimatePresence initial={false}>
-            {messages.map((message: any) => {
-              const textContent = message.parts?.filter((p: any) => p.type === 'text').map((p: any) => p.text).join('\n') || '';
+            {messages.map((message: UIMessage) => {
+              const textContent =
+                message.parts
+                  ?.filter((p): p is { type: 'text'; text: string } => p.type === 'text')
+                  .map((p) => p.text)
+                  .join('\n') || '';
               return (
               <motion.div
                 key={message.id}
