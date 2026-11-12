@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 
 export default function Chat() {
-  const { messages, status, sendMessage, stop, error, regenerate, clearError } = useChat();
+  const { messages, status, sendMessage, stop, error, regenerate, clearError, setMessages } = useChat();
   const [input, setInput] = useState('');
   const isLoading = status === 'submitted' || status === 'streaming';
   
@@ -55,9 +55,25 @@ export default function Chat() {
               <p className="text-xs text-zinc-400 font-medium">Your Personal Health Companion</p>
             </div>
           </div>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-            <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs font-semibold text-emerald-300">Online</span>
+          <div className="flex items-center gap-3">
+            {messages.length > 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  setMessages([]);
+                  clearError();
+                }}
+                title="Start a new chat"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-zinc-400 hover:text-zinc-200 bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">New Chat</span>
+              </button>
+            )}
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+              <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-xs font-semibold text-emerald-300">Online</span>
+            </div>
           </div>
         </div>
 
