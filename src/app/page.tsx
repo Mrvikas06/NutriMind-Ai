@@ -2,7 +2,7 @@
 
 import { useChat } from '@ai-sdk/react';
 import type { UIMessage } from '@ai-sdk/react';
-import { Bot, User, Send, Sparkles, Activity, Apple, Square, AlertCircle, RotateCcw, X } from 'lucide-react';
+import { Bot, User, Send, Sparkles, Activity, Apple, Square, AlertCircle, RotateCcw, X, Copy, Check } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
@@ -26,9 +26,19 @@ function extractText(message: UIMessage): string {
 export default function Chat() {
   const { messages, status, sendMessage, stop, error, regenerate, clearError, setMessages } = useChat();
   const [input, setInput] = useState('');
+  const [copiedId, setCopiedId] = useState<string | null>(null);
   const isLoading = status === 'submitted' || status === 'streaming';
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const handleCopy = (id: string, text: string) => {
+    if (!text || typeof navigator === 'undefined' || !navigator.clipboard) return;
+    navigator.clipboard.writeText(text);
+    setCopiedId(id);
+    setTimeout(() => {
+      setCopiedId((current) => (current === id ? null : current));
+    }, 2000);
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -192,9 +202,26 @@ export default function Chat() {
                       </ReactMarkdown>
                     )}
                   </div>
-                  <span className="text-[10px] text-zinc-500 mt-1.5 px-1 font-medium">
-                    {message.role === 'user' ? 'You' : 'NutriMind'} • Just now
-                  </span>
+                  <div className="flex items-center gap-2 mt-1.5 px-1">
+                    <span className="text-[10px] text-zinc-500 font-medium">
+                      {message.role === 'user' ? 'You' : 'NutriMind'} • Just now
+                    </span>
+                    {message.role !== 'user' && textContent && (
+                      <button
+                        type="button"
+                        onClick={() => handleCopy(message.id, textContent)}
+                        aria-label="Copy response"
+                        title={copiedId === message.id ? 'Copied!' : 'Copy to clipboard'}
+                        className="text-zinc-500 hover:text-zinc-300 transition-colors p-0.5 rounded"
+                      >
+                        {copiedId === message.id ? (
+                          <Check className="w-3 h-3 text-emerald-400" />
+                        ) : (
+                          <Copy className="w-3 h-3" />
+                        )}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </motion.div>
             )})}
